@@ -1,0 +1,106 @@
+Private Sub Workbook_Open()
+    ActiveSheet.Unprotect Password:=25011989
+    Range(Cells(4, 15), Cells(Range("A4").End(xlDown).Row, 15)).Locked = True
+    ActiveSheet.Protect Password:=25011989
+End Sub
+
+
+
+
+Option Base 1
+Sub atualiza_pontuação()
+Dim Nomes() As Variant
+Dim totalnomes, ferias, pontos, dia, primperbranco, segperbranco As Integer
+Dim Data As Date
+
+totalnomes = Range("A4").End(xlDown).Row
+ReDim Nomes(totalnomes - 3, 13)
+primperbranco = 0
+segperbranco = 0
+
+For b = 3 To 6   'Verifica se existe alguma data não preencida no primeiro ou segundo períodos
+    For a = 4 To totalnomes
+        If IsEmpty(Cells(a, b)) And b < 5 Then
+            segperbranco = segperbranco + 1
+        End If
+        If IsEmpty(Cells(a, b)) And b > 4 Then
+            primperbranco = primperbranco + 1
+        End If
+    Next a
+Next b
+
+If segperbranco = (totalnomes - 3) * 2 And primperbranco > 0 Then   'Verifica se falta alguém preencher o primeiro período
+    MsgBox "Aguarde todos preencherem o primeiro período antes de atualizar!"
+    Exit Sub
+End If
+
+If primperbranco = 0 And segperbranco < (totalnomes - 3) * 2 And segperbranco > 0 Then 'Verifica se falta alguém preencher o segundo período
+    MsgBox "Aguarde todos preencherem o segundo período antes de atualizar!"
+    Exit Sub
+End If
+
+For i = 4 To totalnomes
+    For j = 3 To 14
+        Nomes(i - 3, j - 2) = Cells(i, j) 'Armazena a data como elemento de uma matriz
+        If j > 3 And Not IsEmpty(Cells(i, j)) And Not IsEmpty(Cells(i, j - 1)) And (j Mod 2) = 0 Then ' Garante que as células das datas "inicial" e "final" estejam preenchidas e roda os cálculos apenas após armazenar o período final (colunas pares)
+            ferias = Cells(i, j) - Cells(i, j - 1) 'Calcula a quantidade de dias do período
+            Data = Cells(i, j - 1)  'Armazena a data de início do período
+            For dia = 0 To ferias   'Itera os pontos durante a qtd de dias do período (começa a contar em zero pois as férias iniciam já no primeiro dia)
+                mes = Month(Data)   'Verifica qual o mês da data de início das férias
+                Select Case mes     'Verifica a pontuação da data em questão
+                    Case "3": pontos = 7
+                    Case "4": pontos = 4
+                    Case "5": pontos = 4
+                    Case "6": pontos = 4
+                    Case "8": pontos = 4
+                    Case "9": pontos = 4
+                    Case "10": pontos = 4
+                    Case "11": pontos = 4
+                    Case "7": pontos = 9
+                End Select
+                If mes = 1 And Day(Data) < 5 Then
+                    pontos = 15
+                End If
+                If mes = 1 And Day(Data) > 4 Then
+                    pontos = 10
+                End If
+                If mes = 2 And Day(Data) < 19 Then
+                    pontos = 9
+                End If
+                If mes = 2 And Day(Data) > 18 Then
+                    pontos = 8
+                End If
+                If mes = 12 And Day(Data) < 21 Then
+                    pontos = 9
+                End If
+                If mes = 12 And Day(Data) > 20 Then
+                    pontos = 15
+                End If
+                Nomes(i - 3, 13) = Nomes(i - 3, 13) + pontos 'Soma a pontuação
+                Data = Data + 1                              'Adiciona um dia na data
+            Next dia
+        End If
+    Next j
+    ActiveSheet.Unprotect Password:=25011989 'Desbloqueia planilha
+    Cells(i, j) = Nomes(i - 3, 13) 'Coloca a pontuação final na célula de Pontos
+Next i
+
+Range("A1:O3").Select 'Seleciona o cabeçalho
+    Selection.AutoFilter 'Adiciona o filtro no cabeçalho
+    With ActiveSheet.AutoFilter.Sort
+        .SortFields.Clear 'Limpa filtros existentes
+        .SortFields.Add Key:=Range("O1:O3"), Order:=xlAscending 'Seleciona modo de filtragem por ordem crescente na coluna O
+        .Header = xlYes 'Avisa o excel que existem cabeçalhos
+        .Apply  'Executa o ordenamento por ordem crescente
+    End With
+    Selection.AutoFilter 'Remove o filtro do cabeçalho
+
+If primperbranco = 0 And segperbranco = 0 Then 'Se for rodar a pontuação do segundo período a macro calcula a pontuação, ordena a lista e apaga os antepenúltimo e quarto períodos e arrasta as datas do segundo, primeiro, último e penúltimo períodos 4 colunas para a direita
+    Range(Cells(4, 3), Cells(totalnomes, 10)).Copy Destination:=Range(Cells(4, 7), Cells(totalnomes, 14))
+    Range(Cells(4, 3), Cells(totalnomes, 6)).ClearContents
+End If
+
+Range(Cells(4, 15), Cells(totalnomes, 15)).Locked = True 'Bloqueia novamente a coluna dos pontos
+ActiveSheet.Protect Password:=25011989
+
+End Sub

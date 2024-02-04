@@ -1,0 +1,21 @@
+Sub Ajuste_tabela()
+Application.ScreenUpdating = False
+Range(Cells.Find("Partes Interessadas1").Offset(1, 0), Cells.Find("Partes Interessadas1").End(xlDown)).Select 'Verificar se o nome "Partes Interessadas1" permanece igual. Seleciona todo o intervalo da coluna até o primeiro espaço em branco
+For Each cell In Selection
+    partes = Split(cell, ", ") 'Armazena todo o texto após a vírgula como o elemento de um vetor
+    novaslinhas = UBound(Split(cell, ", ")) 'Verifica a qtd de vetores para inserir como novas linhas. A numeração do vetor começa em 0.
+    If novaslinhas >= 1 Then
+        Cells(cell.Row, cell.Column) = partes(0) 'Se houver linhas a adicionar, deixa apenas o primeiro termo antes da vírgula na primeira célula
+        Range(Cells(cell.Row + 1, cell.Column), Cells(cell.Row + novaslinhas, cell.Column)).EntireRow.Insert 'Insere a qtd de linhas em branco necessárias abaixo do primeiro termo.
+
+ 
+
+        Range(Cells(cell.Row, 1), Cells(cell.Row, cell.Column - 1)).Select
+        Selection.AutoFill Destination:=Range(Cells(cell.Row, 1), Cells(cell.Row + novaslinhas, cell.Column - 1)), Type:=xlFillCopy 'Arrasta o conteúdo das colunas anteriores para as novas linhas
+        For i = 1 To novaslinhas
+            Cells(cell.Row + i, cell.Column) = partes(i) 'Cola os conteúdos após a vírgula nas respectivas células abaixo do primeiro termo.
+        Next i
+    End If
+Next cell
+Application.ScreenUpdating = True
+End Sub

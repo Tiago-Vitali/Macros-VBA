@@ -1,0 +1,18 @@
+Sub teste()
+num_abas = ThisWorkbook.Sheets.Count
+Sheets.Add After:=Sheets(num_abas)
+ActiveSheet.Name = "aux"
+For Each aba In ThisWorkbook.Sheets
+    If aba.Name <> "aux" Then
+        Sheets(aba.Name).Activate
+        Range(ActiveSheet.PageSetup.PrintArea).Copy
+        Sheets("aux").Paste
+        Sheets(aba.Name).Cells.ClearContents
+        Sheets("aux").Cells.Copy
+        Sheets(aba.Name).Range("A1").Select
+        Sheets(aba.Name).Paste
+        Sheets("aux").Cells.Delete
+    End If
+Next
+Sheets("aux").Delete
+End Sub

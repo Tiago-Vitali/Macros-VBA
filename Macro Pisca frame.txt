@@ -1,0 +1,6 @@
+Sub piscaframe()
+ActiveWorkbook.ActiveSheet.Shapes(1).Visible = False
+Application.ScreenUpdating = True
+Application.Wait (Now + TimeValue("00:00:01"))
+ActiveWorkbook.ActiveSheet.Shapes(1).Visible = True
+End Sub

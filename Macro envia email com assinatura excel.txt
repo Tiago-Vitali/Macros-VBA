@@ -1,0 +1,33 @@
+Sub envia_email_com_assinatura()
+
+Dim ObjOL As Object
+Dim OlMail As Object
+Dim Signature As String
+Dim ultimalinha As Integer
+
+If Dir(Environ("appdata") & "\Microsoft\Signatures\INCLUA AQUI O NOME DA SUA ASSINATURA.txt") <> "" Then
+    Signature = CreateObject("Scripting.FileSystemObject").GetFile(Environ("AppData") & "\Microsoft\Signatures\INCLUA AQUI O NOME DA SUA ASSINATURA.txt").OpenAsTextStream(1, -2).readall 'Salva o conteúdo do arquivo .txt contendo a assinatura
+Else
+    Signature = ""
+End If
+
+On Error Resume Next
+
+CreateObject("Scripting.FileSystemObject").GetFile(Environ("AppData") & "\Microsoft\Signatures\INCLUA AQUI O NOME DA SUA ASSINATURA.txt").OpenAsTextStream(1, -2).Close 'Fecha o arquivo .txt contendo a assinatura
+ultimalinha = Range("A2").End(xlDown).Row 'Verifica qual a última linha preenchida para determinar o limite superior do loop
+
+For emails = 2 To ultimalinha
+    Set ObjOL = CreateObject("Outlook.Application")
+    Set OlMail = ObjOL.CreateItem(0)
+    With OlMail
+        .To = CStr(ThisWorkbook.Sheets("Send_Mails").Cells(emails, 1)) 'Preenche destinatário
+        .CC = CStr(ThisWorkbook.Sheets("Send_Mails").Cells(emails, 2)) 'Preenche item CC
+        .Subject = CStr(ThisWorkbook.Sheets("Send_Mails").Cells(emails, 4)) 'Preenche título do email
+        .Body = CStr(ThisWorkbook.Sheets("Send_Mails").Cells(emails, 5)) & vbNewLine & vbNewLine & Signature 'Preenche o corpo do email e inclui a assinatura
+        .Attachments.Add (CStr(ThisWorkbook.Sheets("Send_Mails").Cells(emails, 6))) 'Anexa o arquivo
+        .Send 'Envia o email
+    End With
+Next emails
+Set ObjOL = Nothing 'Limpa a variável
+Set OlMail = Nothing 'Limpa a variável
+End Sub

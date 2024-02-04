@@ -1,0 +1,73 @@
+'Esta macro itera entre várias abas salvando os itens equipamentos, soma os que tiverem descrição e unidade de medida iguais e imprime os resultados na aba EQUIPAMENTOS.
+
+
+Option Base 1
+Sub Resume_equipamentos()
+
+Dim qtd_plan As Integer
+Dim I As Integer
+Dim inicio As Object
+Dim lin_inicio As Integer
+Dim lin_final As Integer
+Dim col_inicio As Integer
+Dim d As Integer
+Dim a As Integer
+Dim aux As Integer
+Dim EQUIPAMENTOS As Variant
+Dim itens() As Variant
+
+Application.Screenupdate=False
+d = 1
+qtd_plan = ActiveWorkbook.Worksheets.Count 'Conta a quantidade de planilhas existentes
+         
+    For I = 1 To qtd_plan   'Itera para todas as planilhas existentes
+        If IsNumeric(Left(Worksheets(I).Name, 1)) Then  'Se o nome da planilha começar com um número...
+            Worksheets(I).Activate  'Ativa a planilha
+            Set inicio = Worksheets(I).Range("A1:H100").Find("Quantidade de Equipamentos").Offset(1, -1)    'Código para poupar digitação posterior
+            lin_final = Worksheets(I).Range("A1:H100").Find("B - Custo Total de Equipamentos:").Offset(-1).Row  'Salva o número da linha onde os itens equipamentos terminam
+            lin_inicio = inicio.Row     'Salva o número da linha onde os itens equipamentos começam
+            col_inicio = inicio.Column  'Salva o número da coluna onde os itens equipamentos começam
+            EQUIPAMENTOS = Range(Cells(lin_inicio, col_inicio), Cells(lin_final, col_final)) 'Salva o range existente para os itens equipamentos
+            For Each cell In EQUIPAMENTOS   'Itera dentro do range existente para os itens equipamentos
+                If Not IsEmpty(cell) Then   'Se a célula não estiver em branco...
+                    ReDim Preserve itens(4, d)  'Adiciona uma coluna na matriz que salva os dados dos equipamentos, preservando os dados anteriores
+                    itens(1, d) = Cells(lin_inicio, col_inicio) 'Descrição
+                    itens(2, d) = Cells(lin_inicio, col_inicio + 2) 'Unidade
+                    itens(3, d) = Cells(lin_inicio, col_inicio + 1) 'Quantidade
+                    itens(4, d) = Cells(lin_inicio, col_inicio + 5) 'Valor Total
+                    d = d + 1 'Soma um item para redimensionar a matriz caso haja outro elemento
+                End If
+                lin_inicio = lin_inicio + 1 'Usado para acompanhar a iteração através das células do range EQUIPAMENTOS
+            Next cell
+        End If
+    Next I
+
+For I = LBound(itens, 2) To UBound(itens, 2)    'Itera entre todos os itens salvos
+    If I < UBound(itens, 2) Then    'Realiza a ação até o penúltimo item
+        For a = I + 1 To UBound(itens, 2)   'Realiza uma iteração comparando o elemento com todos os outros após ele
+            If itens(1, I) = itens(1, a) And itens(2, I) = itens(2, a) Then     'Se o campo DESCRIÇÃO E UNIDADE do elemento e seu posterior forem iguais...
+                itens(3, I) = itens(3, I) + itens(3, a)                         'Soma o campo Quantidade de ambos os elementos
+                itens(4, I) = itens(4, I) + itens(4, a)                         'Soma o campo Valor Total de ambos os elementos
+                itens(1, a) = ""                                                'Apaga o campo Descrição do elemento posterior do elemento posterior
+                itens(2, a) = ""                                                'Apaga o campo Unidade do elemento posterior do elemento posterior
+                itens(3, a) = ""                                                'Apaga o campo Quantidade do elemento posterior do elemento posterior
+                itens(4, a) = ""                                                'Apaga o campo Valor total do elemento posterior do elemento posterior
+            End If
+        Next a
+    End If
+Next I
+
+aux = 2                         'Variável auxiliar para preencher em relação a linha de início na planilha EQUIPAMENTOS
+Sheets("EQUIPAMENTOS").Select   'Seleciona a planilha EQUIPAMENTOS
+
+For I = LBound(itens, 2) To UBound(itens, 2)    'Itera entre todos os elementos salvos
+    If itens(1, I) <> "" Then                   'Se o item não for vazio...
+        Cells(aux, 2) = itens(1, I)             'Salva o campo Descrição
+        Cells(aux, 3) = itens(2, I)             'Salva o campo Unidade
+        Cells(aux, 4) = itens(3, I)             'Salva o campo Quantidade
+        Cells(aux, 5) = itens(4, I)             'Salva o campo Valor Total
+        aux = aux + 1                           'Vai para a linha de baixo
+    End If
+Next I
+Application.Screenupdate=True
+End Sub

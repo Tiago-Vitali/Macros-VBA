@@ -1,0 +1,32 @@
+Sub Macro1()
+    Dim limite As Integer
+    Dim n As Integer
+Cells(2, 1).Select 'Seleciona a célula A2
+ultima_colB = ActiveCell.End(xlDown).Offset(0, 1).Select 'Com base na últ cél preenchida na colA desloca pra colB
+limite = Selection.Row 'Define como limite da iteração a qtd de linhas preenchidas
+For n = 2 To limite
+    Cells(n, 2).Select
+    conteudo = Right(Selection, 3) 'Seleciona os /B até /B9
+    If conteudo <> "/B1" And conteudo <> "" Then
+        Cells(n, 2).EntireRow.Delete 'Se a linha não contiver /B1 e nãoestiver vazia é apagada
+        n = n - 1 'Mantém a iteração na mesma linha pois como o valor posterior subiu para essa linha
+    End If
+Next n
+
+'Próxima iteração para subir o /B1 e apagar a linha de baixo
+
+Cells(2, 1).Select 'Seleciona a célula A2
+ultima_colB = ActiveCell.End(xlDown).Offset(0, 1).Select 'Com base na últ cél preenchida na colA desloca pra colB
+limite = Selection.Row 'Define como limite da iteração a qtd de linhas preenchidas
+For n = 2 To limite
+    Cells(n, 2).Select
+    conteudo = Right(Selection, 3) 'Salva na variável conteudo os /B1, /B2, ....
+    If conteudo = "/B1" Then
+        Selection.Cut Destination:=Cells(n - 1, 2)
+        Selection.EntireRow.Delete
+        n = n - 1 'Mantém a iteração na mesma linha pois como o valor posterior subiu para essa linha
+        limite = limite - 1
+    End If
+Next n
+Range("A1").Select
+End Sub

@@ -1,0 +1,21 @@
+Sub teste()
+aux = 2
+num_abas = ThisWorkbook.Sheets.Count 'Conta a qtd de abas
+Sheets.Add After:=Sheets(num_abas) 'Adiciona uma aba após a última aba
+ActiveSheet.Name = "Compilação de tags" 'Nomeia a aba adicionada
+With Sheets("Compilação de tags") 'Apenas pra poupar o trabalho de digitar
+    .Cells(1, 1) = "Tag"
+    .Cells(1, 2) = "Classificação de área"
+    .Cells(1, 3) = "Cor"
+    .Range("A1:C1").Font.Bold = True
+    For Each aba In ThisWorkbook.Sheets 'Itera todas as abas da planilha
+        If IsNumeric(Left(aba.Name, 3)) Then 'Verifica se os primeiros 3 dígitos do nome da aba são números (3 foi escolhido pq eu quis, ajustar conforme os tags)
+            .Cells(aux, 1) = aba.Range("D13") 'Copia o tag do instrumento da aba
+            .Cells(aux, 2) = aba.Range("D16") 'Copia a classificação de área do instrumento
+            .Cells(aux, 3) = aba.Range("D36") 'Copia a cor da pintura do instrumento
+            aux = aux + 1
+        End If
+    Next
+    Columns("A:C").Columns.AutoFit 'Ajusta a largura da coluna
+End With
+End Sub

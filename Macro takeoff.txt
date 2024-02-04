@@ -1,0 +1,227 @@
+Sub Compara_itens_para_takeoff()
+Sheets("Anexo II Relat Total Linha").Select
+Dim n, limite As Integer
+Dim variaveis(1 To 57), variaveis2(1 To 57) As Double
+For i = 1 To 57
+    variaveis(i) = 0
+    variaveis2(i) = 0
+Next i
+
+'Soma a qtd de cada item na aba Anexo II
+
+Cells(12, 3).Select 'Seleciona a célula C12
+limite = ActiveCell.End(xlDown).Row 'Define como limite da iteração a qtd de linhas preenchidas
+For n = 12 To limite
+    Cells(n, 3).Select
+    conteudo = Left(Selection, WorksheetFunction.SearchB(" ", Selection) - 1) 'Armazena o que verificar
+    diam = CStr(Selection.Offset(0, 2)) 'Transforma conteúdo para formato texto pra facilitar
+    If conteudo = "TUBO" Then
+        Select Case diam
+            Case "3/4""": variaveis(1) = variaveis(1) + Cells(n, 7)
+            Case "1/2""": variaveis(2) = variaveis(2) + Cells(n, 7)
+            Case "1""": variaveis(3) = variaveis(3) + Cells(n, 7)
+            Case "1 1/4""": variaveis(4) = variaveis(4) + Cells(n, 7)
+            Case "1 1/2""": variaveis(5) = variaveis(5) + Cells(n, 7)
+            Case "2""": variaveis(6) = variaveis(6) + Cells(n, 7)
+            Case "2 1/2""": variaveis(7) = variaveis(7) + Cells(n, 7)
+            Case "3""": variaveis(8) = variaveis(8) + Cells(n, 7)
+            Case "4""": variaveis(9) = variaveis(9) + Cells(n, 7)
+            Case "5""": variaveis(10) = variaveis(10) + Cells(n, 7)
+            Case "6""": variaveis(11) = variaveis(11) + Cells(n, 7)
+            Case "8""": variaveis(12) = variaveis(12) + Cells(n, 7)
+            Case "10""": variaveis(13) = variaveis(13) + Cells(n, 7)
+            Case "12""": variaveis(14) = variaveis(14) + Cells(n, 7)
+            Case "14""": variaveis(15) = variaveis(15) + Cells(n, 7)
+            Case "16""": variaveis(16) = variaveis(16) + Cells(n, 7)
+            Case "20""": variaveis(17) = variaveis(17) + Cells(n, 7)
+            Case "24""": variaveis(18) = variaveis(18) + Cells(n, 7)
+            Case "28""": variaveis(19) = variaveis(19) + Cells(n, 7)
+            Case "32""": variaveis(20) = variaveis(20) + Cells(n, 7)
+        End Select
+    ElseIf conteudo = "REDUÇÃO" Then
+        Select Case diam
+            Case "10"" X 6""": variaveis(21) = variaveis(21) + Cells(n, 7)
+            Case "10"" X 8""": variaveis(22) = variaveis(22) + Cells(n, 7)
+            Case "12"" X 10""": variaveis(23) = variaveis(23) + Cells(n, 7)
+            Case "12"" X 8""": variaveis(24) = variaveis(24) + Cells(n, 7)
+            Case "14"" X 10""": variaveis(25) = variaveis(25) + Cells(n, 7)
+            Case "16"" X 10""": variaveis(26) = variaveis(26) + Cells(n, 7)
+            Case "16"" X 14""": variaveis(27) = variaveis(27) + Cells(n, 7)
+            Case "18"" X 14""": variaveis(28) = variaveis(28) + Cells(n, 7)
+            Case "20"" X 18""": variaveis(29) = variaveis(29) + Cells(n, 7)
+            Case "24"" X 20""": variaveis(30) = variaveis(30) + Cells(n, 7)
+            Case "28"" X 24""": variaveis(31) = variaveis(31) + Cells(n, 7)
+            Case "32"" X 24""": variaveis(32) = variaveis(32) + Cells(n, 7)
+            Case "4"" X 2 1/2""": variaveis(33) = variaveis(33) + Cells(n, 7)
+            Case "4"" X 2""": variaveis(34) = variaveis(34) + Cells(n, 7)
+            Case "4"" X 3""": variaveis(35) = variaveis(35) + Cells(n, 7)
+            Case "5"" X 4""": variaveis(36) = variaveis(36) + Cells(n, 7)
+            Case "6"" X 3""": variaveis(37) = variaveis(37) + Cells(n, 7)
+            Case "6"" X 4""": variaveis(38) = variaveis(38) + Cells(n, 7)
+            Case "8"" X 4""": variaveis(39) = variaveis(39) + Cells(n, 7)
+            Case "8"" X 5""": variaveis(40) = variaveis(40) + Cells(n, 7)
+            Case "8"" X 6""": variaveis(41) = variaveis(41) + Cells(n, 7)
+        End Select
+    ElseIf conteudo = "PESTANA" Then
+        Select Case diam
+            Case "1 1/2""": variaveis(42) = variaveis(42) + Cells(n, 7)
+            Case "1 1/4""": variaveis(43) = variaveis(43) + Cells(n, 7)
+            Case "2""": variaveis(44) = variaveis(44) + Cells(n, 7)
+            Case "2 1/2""": variaveis(45) = variaveis(45) + Cells(n, 7)
+            Case "3""": variaveis(46) = variaveis(46) + Cells(n, 7)
+            Case "4""": variaveis(47) = variaveis(47) + Cells(n, 7)
+            Case "5""": variaveis(48) = variaveis(48) + Cells(n, 7)
+            Case "6""": variaveis(49) = variaveis(49) + Cells(n, 7)
+            Case "8""": variaveis(50) = variaveis(50) + Cells(n, 7)
+            Case "10""": variaveis(51) = variaveis(51) + Cells(n, 7)
+            Case "12""": variaveis(52) = variaveis(52) + Cells(n, 7)
+            Case "14""": variaveis(53) = variaveis(53) + Cells(n, 7)
+            Case "16""": variaveis(54) = variaveis(54) + Cells(n, 7)
+            Case "18""": variaveis(55) = variaveis(55) + Cells(n, 7)
+            Case "20""": variaveis(56) = variaveis(56) + Cells(n, 7)
+            Case "24""": variaveis(57) = variaveis(57) + Cells(n, 7)
+        End Select
+    End If
+Next n
+Sheets("Relatório Geral").Select
+
+'Soma a qtd de cada item na aba Relatório Geral
+
+Cells(12, 2).Select 'Seleciona a célula B12
+limite = ActiveCell.End(xlDown).Row 'Define como limite da iteração a qtd de linhas preenchidas
+For n = 12 To limite
+    Cells(n, 2).Select
+    conteudo = Left(Selection, WorksheetFunction.SearchB(" ", Selection) - 1) 'Armazena o que verificar
+    diam = CStr(Selection.Offset(0, 2)) 'Transforma conteúdo para formato texto pra facilitar
+    If conteudo = "TUBO" Then
+        Select Case diam
+            Case "3/4""": variaveis2(1) = variaveis2(1) + Cells(n, 7)
+            Case "1/2""": variaveis2(2) = variaveis2(2) + Cells(n, 7)
+            Case "1""": variaveis2(3) = variaveis2(3) + Cells(n, 7)
+            Case "1 1/4""": variaveis2(4) = variaveis2(4) + Cells(n, 7)
+            Case "1 1/2""": variaveis2(5) = variaveis2(5) + Cells(n, 7)
+            Case "2""": variaveis2(6) = variaveis2(6) + Cells(n, 7)
+            Case "2 1/2""": variaveis2(7) = variaveis2(7) + Cells(n, 7)
+            Case "3""": variaveis2(8) = variaveis2(8) + Cells(n, 7)
+            Case "4""": variaveis2(9) = variaveis2(9) + Cells(n, 7)
+            Case "5""": variaveis2(10) = variaveis2(10) + Cells(n, 7)
+            Case "6""": variaveis2(11) = variaveis2(11) + Cells(n, 7)
+            Case "8""": variaveis2(12) = variaveis2(12) + Cells(n, 7)
+            Case "10""": variaveis2(13) = variaveis2(13) + Cells(n, 7)
+            Case "12""": variaveis2(14) = variaveis2(14) + Cells(n, 7)
+            Case "14""": variaveis2(15) = variaveis2(15) + Cells(n, 7)
+            Case "16""": variaveis2(16) = variaveis2(16) + Cells(n, 7)
+            Case "20""": variaveis2(17) = variaveis2(17) + Cells(n, 7)
+            Case "24""": variaveis2(18) = variaveis2(18) + Cells(n, 7)
+            Case "28""": variaveis2(19) = variaveis2(19) + Cells(n, 7)
+            Case "32""": variaveis2(20) = variaveis2(20) + Cells(n, 7)
+        End Select
+    ElseIf conteudo = "REDUÇÃO" Then
+        Select Case diam
+            Case "10"" X 6""": variaveis2(21) = variaveis2(21) + Cells(n, 7)
+            Case "10"" X 8""": variaveis2(22) = variaveis2(22) + Cells(n, 7)
+            Case "12"" X 10""": variaveis2(23) = variaveis2(23) + Cells(n, 7)
+            Case "12"" X 8""": variaveis2(24) = variaveis2(24) + Cells(n, 7)
+            Case "14"" X 10""": variaveis2(25) = variaveis2(25) + Cells(n, 7)
+            Case "16"" X 10""": variaveis2(26) = variaveis2(26) + Cells(n, 7)
+            Case "16"" X 14""": variaveis2(27) = variaveis2(27) + Cells(n, 7)
+            Case "18"" X 14""": variaveis2(28) = variaveis2(28) + Cells(n, 7)
+            Case "20"" X 18""": variaveis2(29) = variaveis2(29) + Cells(n, 7)
+            Case "24"" X 20""": variaveis2(30) = variaveis2(30) + Cells(n, 7)
+            Case "28"" X 24""": variaveis2(31) = variaveis2(31) + Cells(n, 7)
+            Case "32"" X 24""": variaveis2(32) = variaveis2(32) + Cells(n, 7)
+            Case "4"" X 2 1/2""": variaveis2(33) = variaveis2(33) + Cells(n, 7)
+            Case "4"" X 2""": variaveis2(34) = variaveis2(34) + Cells(n, 7)
+            Case "4"" X 3""": variaveis2(35) = variaveis2(35) + Cells(n, 7)
+            Case "5"" X 4""": variaveis2(36) = variaveis2(36) + Cells(n, 7)
+            Case "6"" X 3""": variaveis2(37) = variaveis2(37) + Cells(n, 7)
+            Case "6"" X 4""": variaveis2(38) = variaveis2(38) + Cells(n, 7)
+            Case "8"" X 4""": variaveis2(39) = variaveis2(39) + Cells(n, 7)
+            Case "8"" X 5""": variaveis2(40) = variaveis2(40) + Cells(n, 7)
+            Case "8"" X 6""": variaveis2(41) = variaveis2(41) + Cells(n, 7)
+        End Select
+    ElseIf conteudo = "PESTANA" Then
+        Select Case diam
+            Case "1 1/2""": variaveis2(42) = variaveis2(42) + Cells(n, 7)
+            Case "1 1/4""": variaveis2(43) = variaveis2(43) + Cells(n, 7)
+            Case "2""": variaveis2(44) = variaveis2(44) + Cells(n, 7)
+            Case "2 1/2""": variaveis2(45) = variaveis2(45) + Cells(n, 7)
+            Case "3""": variaveis2(46) = variaveis2(46) + Cells(n, 7)
+            Case "4""": variaveis2(47) = variaveis2(47) + Cells(n, 7)
+            Case "5""": variaveis2(48) = variaveis2(48) + Cells(n, 7)
+            Case "6""": variaveis2(49) = variaveis2(49) + Cells(n, 7)
+            Case "8""": variaveis2(50) = variaveis2(50) + Cells(n, 7)
+            Case "10""": variaveis2(51) = variaveis2(51) + Cells(n, 7)
+            Case "12""": variaveis2(52) = variaveis2(52) + Cells(n, 7)
+            Case "14""": variaveis2(53) = variaveis2(53) + Cells(n, 7)
+            Case "16""": variaveis2(54) = variaveis2(54) + Cells(n, 7)
+            Case "18""": variaveis2(55) = variaveis2(55) + Cells(n, 7)
+            Case "20""": variaveis2(56) = variaveis2(56) + Cells(n, 7)
+            Case "24""": variaveis2(57) = variaveis2(57) + Cells(n, 7)
+        End Select
+    End If
+Next n
+For j = 1 To 57 'Compara o total de cada item e exibe mensagens de erro
+    If CStr(variaveis(j)) <> CStr(variaveis2(j)) Then 'Converte para texto para comparar pq qnd comparei com números ele dizia q o q era = era diferente <o>
+        Select Case j
+            Case 1: MsgBox ("Problema em TUBO 3/4""")
+            Case 2: MsgBox ("Problema em TUBO 1 1/2""")
+            Case 3: MsgBox ("Problema em TUBO 1""")
+            Case 4: MsgBox ("Problema em TUBO 1 1/4""")
+            Case 5: MsgBox ("Problema em TUBO 1 1/2""")
+            Case 6: MsgBox ("Problema em TUBO 2""")
+            Case 7: MsgBox ("Problema em TUBO 2 1/2""")
+            Case 8: MsgBox ("Problema em TUBO 3""")
+            Case 9: MsgBox ("Problema em TUBO 4""")
+            Case 10: MsgBox ("Problema em TUBO 5""")
+            Case 11: MsgBox ("Problema em TUBO 6""")
+            Case 12: MsgBox ("Problema em TUBO 8""")
+            Case 13: MsgBox ("Problema em TUBO 10""")
+            Case 14: MsgBox ("Problema em TUBO 12""")
+            Case 15: MsgBox ("Problema em TUBO 14""")
+            Case 16: MsgBox ("Problema em TUBO 16""")
+            Case 17: MsgBox ("Problema em TUBO 20""")
+            Case 18: MsgBox ("Problema em TUBO 24""")
+            Case 19: MsgBox ("Problema em TUBO 28""")
+            Case 20: MsgBox ("Problema em TUBO 32""")
+            Case 21: MsgBox ("Problema em REDUÇÃO 10"" X 6""")
+            Case 22: MsgBox ("Problema em REDUÇÃO 10"" X 8""")
+            Case 23: MsgBox ("Problema em REDUÇÃO 12"" X 10""")
+            Case 24: MsgBox ("Problema em REDUÇÃO 12"" X 8""")
+            Case 25: MsgBox ("Problema em REDUÇÃO 14"" X 10""")
+            Case 26: MsgBox ("Problema em REDUÇÃO 16"" X 10""")
+            Case 27: MsgBox ("Problema em REDUÇÃO 16"" X 14""")
+            Case 28: MsgBox ("Problema em REDUÇÃO 18"" X 14""")
+            Case 29: MsgBox ("Problema em REDUÇÃO 20"" X 18""")
+            Case 30: MsgBox ("Problema em REDUÇÃO 24"" X 20""")
+            Case 31: MsgBox ("Problema em REDUÇÃO 28"" X 24""")
+            Case 32: MsgBox ("Problema em REDUÇÃO 32"" X 24""")
+            Case 33: MsgBox ("Problema em REDUÇÃO 4"" X 2 1/2""")
+            Case 34: MsgBox ("Problema em REDUÇÃO 4"" X 2""")
+            Case 35: MsgBox ("Problema em REDUÇÃO 4"" X 3""")
+            Case 36: MsgBox ("Problema em REDUÇÃO 5"" X 4""")
+            Case 37: MsgBox ("Problema em REDUÇÃO 6"" X 3""")
+            Case 38: MsgBox ("Problema em REDUÇÃO 6"" X 4""")
+            Case 39: MsgBox ("Problema em REDUÇÃO 8"" X 4""")
+            Case 40: MsgBox ("Problema em REDUÇÃO 8"" X 5""")
+            Case 41: MsgBox ("Problema em REDUÇÃO 8"" X 6""")
+            Case 42: MsgBox ("Problema em PESTANA 1 1/2""")
+            Case 43: MsgBox ("Problema em PESTANA 1 1/4""")
+            Case 44: MsgBox ("Problema em PESTANA 2""")
+            Case 45: MsgBox ("Problema em PESTANA 2 1/2""")
+            Case 46: MsgBox ("Problema em PESTANA 3""")
+            Case 47: MsgBox ("Problema em PESTANA 4""")
+            Case 48: MsgBox ("Problema em PESTANA 5""")
+            Case 49: MsgBox ("Problema em PESTANA 6""")
+            Case 50: MsgBox ("Problema em PESTANA 8""")
+            Case 51: MsgBox ("Problema em PESTANA 10""")
+            Case 52: MsgBox ("Problema em PESTANA 12""")
+            Case 53: MsgBox ("Problema em PESTANA 14""")
+            Case 54: MsgBox ("Problema em PESTANA 16""")
+            Case 55: MsgBox ("Problema em PESTANA 18""")
+            Case 56: MsgBox ("Problema em PESTANA 20""")
+            Case 57: MsgBox ("Problema em PESTANA 24""")
+        End Select
+    End If
+Next j
+End Sub

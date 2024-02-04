@@ -1,0 +1,28 @@
+Sub compara_revisões()
+Dim original As String
+Dim revisao As String
+Dim caminho_antigo As String
+Dim caminho_novo As String
+
+original = "38430-I-FDD-00026-0001 Controle - Cópia.xlsx" 'Colocar o nome do arquivo original
+caminho_antigo = "C:\Users\VITALI\Desktop\Tarefinhas\Comparar listas PUR VBA\38430-I-FDD-00026-0001 Controle - Cópia.xlsx" 'Colocar o caminho do arquivo original
+caminho_novo = "C:\Users\VITALI\Desktop\Tarefinhas\Comparar listas PUR VBA\Nova pasta\38430-I-FDD-00026-0001 Controle - Rev_A - Cópia.xlsx" 'Colocar o caminho do arquivo novo
+Workbooks.Open caminho_novo
+revisao = "38430-I-FDD-00026-0001 Controle - Rev_A - Cópia.xlsx" 'Colocar o nome do arquivo novo
+
+For aba = 1 To Workbooks(revisao).Sheets.Count 'Itera entre todas as abas existentes, ocultas ou não, no arquivo novo
+    ult_linha = Range(ActiveSheet.PageSetup.PrintArea).Rows.Count 'Verifica quantas linhas tem na área de impressão
+    For aba2 = 1 To Workbooks(original).Sheets.Count 'Itera entre todas as abas existentes, ocultas ou não, no arquivo antigo
+        If IsNumeric(Left(Workbooks(revisao).Sheets(aba).Name, 1)) = True And Workbooks(revisao).Sheets(aba).Name = Workbooks(original).Sheets(aba2).Name Then 'Verifica se os nomes das abas são iguais e se começam com números
+                For I = 19 To ult_linha
+                    On Error GoTo proximo
+                    If Workbooks(original).Sheets(aba2).Cells(I, 4) <> Workbooks(revisao).Sheets(aba).Cells(I, 4) Then
+                        Workbooks(revisao).Sheets(aba).Cells(I, 3) = "a" ' Revisão "a"
+                        Workbooks(revisao).Sheets(aba).Cells(I, 3).Font.Color = -16776961 'Cor da fonte vermelho
+                    End If
+proximo:
+                Next I
+        End If
+    Next aba2
+Next aba
+End Sub

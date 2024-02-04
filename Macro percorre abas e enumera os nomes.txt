@@ -1,0 +1,12 @@
+Sub teste()
+aux = 1
+num_abas = ThisWorkbook.Sheets.Count
+Sheets.Add After:=Sheets(num_abas)
+ActiveSheet.Name = "Nomes das abas"
+For Each aba In ThisWorkbook.Sheets
+    If aba.Name <> "Nomes das abas" Then
+        Sheets("Nomes das abas").Cells(aux, 1) = aba.Name
+    End If
+    aux = aux + 1
+Next
+End Sub

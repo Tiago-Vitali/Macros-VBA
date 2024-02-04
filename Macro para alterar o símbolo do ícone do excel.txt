@@ -1,0 +1,54 @@
+Private Declare PtrSafe Function SendMessageA Lib "user32" _
+      (ByVal HWnd As LongPtr, _
+      ByVal wMsg As LongPtr, _
+      ByVal wParam As LongPtr, _
+      ByVal lParam As LongPtr) As LongPtr
+
+Private Declare PtrSafe Function ExtractIconA Lib "shell32.dll" _
+      (ByVal hInst As LongPtr, _
+      ByVal lpszExeFileName As String, _
+      ByVal nIconIndex As LongPtr) As Long
+
+Private Const ICON_SMALL = 0&
+Private Const ICON_BIG = 1&
+Private Const WM_SETICON = &H80
+Sub SetIcon(FileName As String, Optional Index As Long = 0)
+
+Dim HWnd As LongPtr
+Dim HIcon As LongPtr
+Dim N As Long
+    Dim S As String
+    If Dir(FileName, vbNormal) = vbNullString Then
+        ' arquivo não encontrado, encerra a macro
+        Exit Sub
+    End If
+    ' armazena a extensão do arquivo.
+    N = InStrRev(FileName, ".")
+    S = LCase(Mid(FileName, N + 1))
+    ' Assegure-se de ter um tipo válido de arquivo (.exe, .ico, .dll)
+    Select Case S
+        Case "exe", "ico", "dll"
+            ' OK
+        Case Else
+            ' tipo de arquivo inválido
+            Err.Raise 5
+    End Select
+    HWnd = Application.HWnd
+    If HWnd = 0 Then
+        Exit Sub
+    End If
+    HIcon = ExtractIconA(0, FileName, Index)
+    If HIcon <> 0 Then
+        SendMessageA HWnd, WM_SETICON, ICON_SMALL, HIcon
+    End If
+End Sub
+
+Sub muda_ícone()
+SetIcon "C:\XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", 0
+End Sub
+
+Sub restaura_ícone()
+  Dim FName As String
+    FName = Application.Path & "\excel.exe"
+    SetIcon FileName:=FName, Index:=0
+End Sub
