@@ -1,7 +1,7 @@
 Private Sub Workbook_Open()
-    ActiveSheet.Unprotect Password:=25011989
+    ActiveSheet.Unprotect Password:=XXX
     Range(Cells(4, 15), Cells(Range("A4").End(xlDown).Row, 15)).Locked = True
-    ActiveSheet.Protect Password:=25011989
+    ActiveSheet.Protect Password:=XXX
 End Sub
 
 
@@ -81,7 +81,7 @@ For i = 4 To totalnomes
             Next dia
         End If
     Next j
-    ActiveSheet.Unprotect Password:=25011989 'Desbloqueia planilha
+    ActiveSheet.Unprotect Password:=XXX 'Desbloqueia planilha
     Cells(i, j) = Nomes(i - 3, 13) 'Coloca a pontuação final na célula de Pontos
 Next i
 
@@ -101,6 +101,6 @@ If primperbranco = 0 And segperbranco = 0 Then 'Se for rodar a pontuação do se
 End If
 
 Range(Cells(4, 15), Cells(totalnomes, 15)).Locked = True 'Bloqueia novamente a coluna dos pontos
-ActiveSheet.Protect Password:=25011989
+ActiveSheet.Protect Password:=XXX
 
 End Sub
